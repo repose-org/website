@@ -44,6 +44,16 @@ jobs:
           REPOSE_SITE_BASE: /${{ github.event.repository.name }}/
         run: pnpm run build
 
+      # Fails fast if the build is misconfigured. A blank site at *.github.io/<repo> usually means
+      # Pages is serving repo-root index.html (dev entry src="/src/main.tsx") instead of this artifact.
+      - name: Verify production bundle
+        run: |
+          test -f dist/index.html
+          if grep -F 'src="/src/main.tsx"' dist/index.html || grep -F "src='/src/main.tsx'" dist/index.html; then
+            echo "::error::dist/index.html still references the Vite dev entrypoint."
+            exit 1
+          fi
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:

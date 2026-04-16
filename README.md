@@ -2,6 +2,14 @@
 
 Static landing page for the Repose project (Vite + React). This repository is also included as a **git submodule** in the Repose monorepo ([`repose-org`](https://github.com/repose-org)) under `website/`.
 
+## Blank page at `*.github.io/<repo>`?
+
+If the tab title appears but the page is **empty**, GitHub Pages is almost certainly serving **this repo’s source `index.html`** (the Vite dev template with `<script type="module" src="/src/main.tsx">`). Browsers then request `https://<user>.github.io/src/main.tsx`, which **404s**, so React never loads.
+
+**Fix:** In **Settings → Pages → Build and deployment**, set **Source** to **GitHub Actions**, not **Deploy from a branch**. The workflow publishes the **`pnpm build`** output under `dist/` (single inlined HTML), not the raw repo root.
+
+After changing the source, re-run **Deploy to GitHub Pages** from the Actions tab (or push to `main`).
+
 ## Develop
 
 From this repository:
