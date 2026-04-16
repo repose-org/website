@@ -46,3 +46,12 @@ Pushes to **`main`** run [`.github/workflows/deploy-pages.yml`](.github/workflow
 3. After the first successful workflow run, the site is available at **`https://repose-org.github.io/website/`** (project site URL for this repository).
 
 Workflow runs are listed under the **Actions** tab.
+
+### If the site returns 404
+
+1. **Wait for Actions** — The first deploy after enabling Pages can take a minute or two. Check the latest **Deploy to GitHub Pages** run is green.
+2. **Pages source** — **Settings → Pages → Build and deployment → Source** must be **GitHub Actions**, not “Deploy from a branch”.
+3. **URL** — Use the project URL `https://repose-org.github.io/website/` (with trailing slash is fine). `…/website/index.html` should also return **200**.
+4. **Organization policy** — The org must allow GitHub Pages for public repositories (org **Settings → Pages**).
+
+The CI build sets **`REPOSE_SITE_BASE`** to `/<repository-name>/` so the Vite app matches the [GitHub Pages project-site path](https://vitejs.dev/guide/build.html#public-base-path).
